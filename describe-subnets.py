@@ -15,7 +15,7 @@ def list_subnets(profile, region):
 if __name__ == '__main__':
     #open file for writing
     file = open("describe-subnets.txt", "w")
-    file.write('owner_id,region,vpc_id,availability_zone_id,subnet_id,cidr_block\n')
+   # file.write('owner_id,region,vpc_id,availability_zone_id,subnet_id,cidr_block\n')
 
     list_subnets('network', 'us-east-1', )
     list_subnets('network', 'us-west-2')
