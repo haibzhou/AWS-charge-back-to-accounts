@@ -4,7 +4,7 @@ import json
 
 
 #open file to write
-file_matrix = open("subnets-src-dst-matrix.txt", 'w')
+file_matrix = open("subnets-src-dst-matrix_json.txt", 'w')
 #open file to read
 file = open("describe-subnets.txt", 'r')
 
