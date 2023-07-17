@@ -45,6 +45,8 @@ if __name__ == '__main__':
     #get all the route table id for this account and this region
     for line in file:
         print(line)
+        #strip the \n from the end of the line
+        line = line.rstrip()
         #get profile and region
         profile, region, vpcid, avaibility_zone_id,subnetid, cidr_block = line.split(',')
         #get route table id for this account and this region
