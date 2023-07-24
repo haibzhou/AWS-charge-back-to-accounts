@@ -71,10 +71,10 @@ def search_transit_gateway_routes(transit_gateway_route_table_id, destination_ci
     
     response = client.search_transit_gateway_routes(
         TransitGatewayRouteTableId=transit_gateway_route_table_id,
-        #set filter to route-seatch exact match for destination cidr block
+        #set filter to route-seatch that match supernet of destination_cidr_block, it will match 0.0.0.0/0 too
         Filters=[
             {
-                'Name': 'route-search.exact-match',
+                'Name': 'route-search.supernet-of-match',
                 'Values': [
                     destination_cidr_block,
                     
@@ -85,7 +85,18 @@ def search_transit_gateway_routes(transit_gateway_route_table_id, destination_ci
         ]
       
     )
-    return response 
+    #find the longest match
+    
+    for route in response['Routes']:
+        destination_cidr_block = route['DestinationCidrBlock']
+        best_prefix_length = 0
+        prefix_length = int(destination_cidr_block.split('/')[1])
+        if prefix_length >= best_prefix_length:
+            best_prefix_length = prefix_length
+            best_route = route
+        
+    print(best_route)   
+    return best_route 
     
 #main program
 if __name__ == "__main__":
@@ -104,8 +115,8 @@ if __name__ == "__main__":
     tgw_rbt_id = transit_gateway_rtb_id[0]
     print(tgw_rbt_id)
     
-    #search transit gateway routes
-    response = search_transit_gateway_routes(tgw_rbt_id, '10.2.0.0/16', 'network', 'us-east-1')
+    #search transit gateway routes to find best match to destination cidr block in matched transit_gateway_route_table_id
+    response = search_transit_gateway_routes(tgw_rbt_id, '10.2.0.0/24', 'network', 'us-east-1')
     print(response)
     
 
